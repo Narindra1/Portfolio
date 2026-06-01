@@ -7,8 +7,6 @@ import ExperiencesSection from "./UI/Experiences/ExperiencesSection.vue";
 import TechSection from "./UI/Technologies/TechSection.vue";
 import ProjectsSection from "./UI/Projects/ProjectsSection.vue";
 import ContactSection from "./UI/Contacts/ContactSection.vue";
-import FooterSection from "./UI/Footer/FooterSection.vue";
-
 onMounted(() => {
   const observer = new IntersectionObserver(
     (entries) => {
@@ -33,6 +31,5 @@ onMounted(() => {
       <ProjectsSection />
       <ContactSection />
     </main>
-    <FooterSection />
   </div>
 </template>

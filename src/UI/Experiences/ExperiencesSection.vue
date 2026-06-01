@@ -1,177 +1,387 @@
-<script setup>
-import { onMounted } from "vue";
-import { timeline } from "./data.js";
-
-onMounted(() => {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) e.target.classList.add("visible");
-      });
-    },
-    { threshold: 0.1 },
-  );
-  document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
-});
-</script>
-
 <template>
   <section
     id="experiences"
-    class="py-24 bg-night relative overflow-hidden dot-grid"
+    class="py-28 relative overflow-hidden"
+    style="background: #161622"
   >
-    <!-- Déco -->
-    <div
-      class="absolute top-10 right-0 w-64 h-64 rounded-full bg-rose/5 blur-3xl pointer-events-none"
-    ></div>
-    <div
-      class="absolute bottom-10 left-0 w-48 h-48 rounded-full bg-lavender/5 blur-3xl pointer-events-none"
-    ></div>
+    <div class="orb orb-right"></div>
+    <div class="orb orb-left"></div>
 
-    <div class="max-w-4xl mx-auto px-6">
-      <!-- Titre -->
-      <div class="text-center mb-16 reveal">
-        <p class="font-sans text-xs text-rose tracking-[0.3em] uppercase mb-3">
-          Parcours
-        </p>
-        <h2 class="section-title">Expériences & Formation</h2>
-        <div class="flex justify-center mt-4">
-          <div class="divider-rose"></div>
-        </div>
-        <p class="section-subtitle mt-4 max-w-md mx-auto">
-          Ma chronologie professionnelle et académique
-        </p>
+    <div class="mx-auto px-10">
+      <!-- ── Titre ── -->
+      <div
+        ref="titleRef"
+        class="mb-10 reveal"
+        :class="{ visible: titleVisible }"
+      >
+        <h2 class="main-title">
+          <span class="gradient-text">Expériences & Formation</span>
+        </h2>
+        <div class="title-bar"></div>
       </div>
 
-      <!-- Légende -->
-      <div class="flex justify-center gap-6 mb-12 reveal">
-        <div class="flex items-center gap-2">
-          <div
-            class="w-3 h-3 rounded-full bg-gradient-to-br from-rose to-roseDark"
-          ></div>
-          <span class="font-sans text-xs text-muted uppercase tracking-wider"
-            >Professionnel</span
-          >
-        </div>
-        <div class="flex items-center gap-2">
-          <div
-            class="w-3 h-3 rounded-full bg-gradient-to-br from-gold to-lavenderDark"
-          ></div>
-          <span class="font-sans text-xs text-muted uppercase tracking-wider"
-            >Formation</span
-          >
-        </div>
+      <!-- ── Filtres ── -->
+      <div
+        ref="filterRef"
+        class="filters reveal"
+        :class="{ visible: filterVisible }"
+      >
+        <button
+          class="filter-btn"
+          :class="{ active: activeFilter === 'all' }"
+          @click="activeFilter = 'all'"
+        >
+          Tout
+        </button>
+        <button
+          class="filter-btn"
+          :class="{ active: activeFilter === 'work' }"
+          @click="activeFilter = 'work'"
+        >
+          <span class="filter-dot dot-work"></span> Professionnel
+        </button>
+        <button
+          class="filter-btn"
+          :class="{ active: activeFilter === 'education' }"
+          @click="activeFilter = 'education'"
+        >
+          <span class="filter-dot dot-edu"></span> Formation
+        </button>
       </div>
 
-      <!-- Timeline -->
-      <div class="relative">
-        <!-- Ligne verticale centrale -->
-        <div
-          class="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-rose/30 via-lavender/40 to-gold/30 -translate-x-1/2 hidden md:block"
-        ></div>
+      <!-- ── Timeline ── -->
+      <div class="timeline">
+        <div class="timeline-line"></div>
 
-        <!-- Ligne mobile -->
-        <div
-          class="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-rose/30 via-lavender/40 to-gold/30 md:hidden"
-        ></div>
-
-        <div class="space-y-8">
+        <template v-for="(item, index) in filteredTimeline" :key="index">
           <div
-            v-for="(item, index) in timeline"
-            :key="index"
-            :class="[
-              'reveal relative flex items-start gap-4',
-              index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse',
-              'flex-row',
-            ]"
+            class="timeline-item reveal"
+            :class="{ visible: true, 'item-right': index % 2 !== 0 }"
           >
-            <!-- Carte (desktop: moitié gauche ou droite) -->
-            <div
-              :class="[
-                'w-full md:w-5/12 group',
-                index % 2 === 0 ? 'md:text-right' : 'md:text-left',
-              ]"
-            >
-              <div class="card p-5 group-hover:border-rose/40 ml-12 md:ml-0">
-                <!-- Header -->
-                <div
-                  :class="[
-                    'flex items-start gap-3 mb-3',
-                    index % 2 === 0 ? 'md:flex-row-reverse' : '',
-                  ]"
-                >
-                  <div
-                    :class="[
-                      'w-10 h-10 rounded-xl bg-gradient-to-br ' +
-                        item.color +
-                        ' flex items-center justify-center text-lg shadow-md flex-shrink-0',
-                    ]"
-                  >
-                    {{ item.icon }}
-                  </div>
-                  <div :class="[index % 2 === 0 ? 'md:text-right' : '']">
-                    <span
-                      class="font-sans text-xs font-bold text-rose tracking-widest uppercase"
-                      >{{ item.year }}</span
-                    >
-                    <h3
-                      class="font-serif text-lg text-textPrimary leading-tight"
-                    >
-                      {{ item.title }}
-                    </h3>
-                    <p class="font-sans text-xs text-textMuted font-medium">
-                      {{ item.subtitle }}
-                    </p>
-                  </div>
+            <!-- Carte -->
+            <div class="tl-card">
+              <div class="tl-header">
+                <div class="tl-icon">
+                  {{ item.icon }}
                 </div>
-
-                <!-- Description -->
-                <p
-                  class="font-sans text-sm text-textMuted leading-relaxed mb-3"
-                >
-                  {{ item.description }}
-                </p>
-
-                <!-- Tags -->
-                <div
-                  :class="[
-                    'flex flex-wrap gap-1.5',
-                    index % 2 === 0 ? 'md:justify-end' : '',
-                  ]"
-                >
-                  <span
-                    v-for="tag in item.tags"
-                    :key="tag"
-                    class="tag text-xs"
-                    >{{ tag }}</span
-                  >
+                <div>
+                  <span class="tl-year">{{ item.year }}</span>
+                  <h3 class="tl-title">{{ item.title }}</h3>
+                  <p class="tl-subtitle">{{ item.subtitle }}</p>
                 </div>
+              </div>
+              <p class="tl-desc">{{ item.description }}</p>
+              <div class="tl-tags">
+                <span v-for="tag in item.tags" :key="tag" class="tl-tag">{{
+                  tag
+                }}</span>
               </div>
             </div>
 
-            <!-- Point central (visible desktop) -->
-            <div class="hidden md:flex w-2/12 justify-center items-start pt-5">
-              <div
-                :class="[
-                  'w-5 h-5 rounded-full bg-gradient-to-br border-2 border-white shadow-md z-10 ' +
-                    item.color,
-                ]"
-              ></div>
-            </div>
-
-            <!-- Spacer opposé (desktop) -->
-            <div class="hidden md:block w-5/12"></div>
-
-            <!-- Point mobile -->
+            <!-- Point -->
             <div
-              :class="[
-                'absolute left-4 top-5 w-4 h-4 rounded-full bg-gradient-to-br border-2 border-white shadow-md z-10 md:hidden ' +
-                  item.color,
-              ]"
+              class="tl-dot"
+              :class="item.type === 'work' ? 'dot-blue' : 'dot-green'"
             ></div>
           </div>
-        </div>
+        </template>
       </div>
     </div>
   </section>
 </template>
+
+<script setup>
+import { ref, computed } from "vue";
+import { useIntersectionObserver } from "@vueuse/core";
+import { timeline } from "./data.js";
+
+const titleRef = ref(null);
+const filterRef = ref(null);
+const titleVisible = ref(false);
+const filterVisible = ref(false);
+const activeFilter = ref("all");
+
+useIntersectionObserver(
+  titleRef,
+  ([{ isIntersecting }]) => {
+    if (isIntersecting) titleVisible.value = true;
+  },
+  { threshold: 0.2 },
+);
+useIntersectionObserver(
+  filterRef,
+  ([{ isIntersecting }]) => {
+    if (isIntersecting) filterVisible.value = true;
+  },
+  { threshold: 0.2 },
+);
+
+const filteredTimeline = computed(() =>
+  activeFilter.value === "all"
+    ? timeline
+    : timeline.filter((i) => i.type === activeFilter.value),
+);
+
+// function iconBg(type) {
+//   return type === "work"
+//     ? "linear-gradient(135deg, #3b82f6, #60a5fa)"
+//     : "linear-gradient(135deg, #00c896, #00f5a0)";
+// }
+</script>
+
+<style scoped>
+/* ── Orbes ── */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(90px);
+}
+.orb-right {
+  top: -60px;
+  right: -60px;
+  width: 440px;
+  height: 440px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.1), transparent 70%);
+}
+.orb-left {
+  bottom: -60px;
+  left: -60px;
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, rgba(0, 200, 150, 0.09), transparent 70%);
+}
+
+/* ── Reveal ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.65s ease,
+    transform 0.65s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Titre ── */
+.main-title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  color: #f1f5f994;
+  line-height: 1.15;
+  font-family:
+    Space Grotesk,
+    sans-serif;
+  margin-bottom: 1rem;
+}
+.gradient-text {
+  color: #e2e8f0;
+}
+.title-bar {
+  width: 48px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #00c896, #6366f1);
+}
+
+/* ── Filtres ── */
+.filters {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 1.1rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family:
+    Space Grotesk,
+    sans-serif;
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  color: #64748b;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.filter-btn:hover {
+  border-color: rgba(0, 200, 150, 0.3);
+  color: #94a3b8;
+}
+.filter-btn.active {
+  border-color: #00c896;
+  color: #00c896;
+  background: rgba(0, 200, 150, 0.07);
+}
+.filter-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dot-work {
+  background: #3b82f6;
+}
+.dot-edu {
+  background: #00c896;
+}
+
+/* ── Timeline ── */
+.timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, #00c896 0%, #6366f1 100%);
+  opacity: 0.6;
+}
+
+/* ── Item ── */
+.timeline-item {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: calc(50% + 2.5rem);
+}
+.timeline-item.item-right {
+  justify-content: flex-start;
+  padding-right: 0;
+  padding-left: calc(50% + 2.5rem);
+}
+
+/* ── Dot ── */
+.tl-dot {
+  position: absolute;
+  left: 50%;
+  top: 1.4rem;
+  transform: translateX(-50%);
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 2px solid #161622;
+  box-shadow: 0 0 8px rgba(0, 200, 150, 0.4);
+  z-index: 2;
+}
+.dot-green {
+  background: #00c896;
+  box-shadow: 0 0 8px rgba(0, 200, 150, 0.45);
+}
+.dot-blue {
+  background: #3b82f6;
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.45);
+}
+
+/* ── Carte ── */
+.tl-card {
+  background: rgba(15, 15, 26, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  padding: 1.2rem 1.4rem;
+  width: 100%;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+  backdrop-filter: blur(8px);
+}
+.tl-card:hover {
+  border-color: rgba(0, 200, 150, 0.22);
+  box-shadow: 0 4px 24px rgba(0, 200, 150, 0.07);
+}
+
+.tl-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  margin-bottom: 0.7rem;
+}
+.tl-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+  border: 1.5px solid rgba(0, 200, 150, 0.45);
+  box-shadow: 0 0 8px rgba(0, 200, 150, 0.1);
+}
+.tl-year {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #818cf8;
+  margin-bottom: 0.1rem;
+}
+.tl-title {
+  font-size: 0.93rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  font-family:
+    Space Grotesk,
+    sans-serif;
+  line-height: 1.3;
+}
+.tl-subtitle {
+  font-size: 0.7rem;
+  color: #475569;
+  margin-top: 0.1rem;
+}
+.tl-desc {
+  font-size: 0.84rem;
+  line-height: 1.75;
+  color: #94a3b8;
+  margin-bottom: 0.8rem;
+}
+.tl-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.tl-tag {
+  font-size: 0.67rem;
+  font-weight: 600;
+  padding: 0.18rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(0, 200, 150, 0.07);
+  border: 1px solid rgba(0, 200, 150, 0.16);
+  color: #00c896;
+  font-family:
+    Space Grotesk,
+    sans-serif;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .timeline-line {
+    left: 18px;
+    transform: none;
+  }
+  .timeline-item,
+  .timeline-item.item-right {
+    justify-content: flex-start;
+    padding-left: 3rem;
+    padding-right: 0;
+  }
+  .tl-dot {
+    left: 11px;
+    transform: none;
+  }
+}
+</style>

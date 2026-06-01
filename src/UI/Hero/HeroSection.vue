@@ -1,20 +1,19 @@
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
+
+const text = ref("");
+const fullText = "Développeur Fullstack ";
+const index = ref(0);
 
 onMounted(() => {
-  // Typed text effect
-  const text = "Développeuse Web";
-  let i = 0;
-  const el = document.getElementById("typed-text");
-  if (!el) return;
-  el.textContent = "";
-  const type = () => {
-    if (i < text.length) {
-      el.textContent += text[i++];
-      setTimeout(type, 80);
+  const interval = setInterval(() => {
+    if (index.value < fullText.length) {
+      text.value += fullText[index.value];
+      index.value++;
+    } else {
+      clearInterval(interval);
     }
-  };
-  setTimeout(type, 800);
+  }, 60);
 });
 
 const scrollTo = (href) => {
@@ -26,227 +25,338 @@ const scrollTo = (href) => {
 <template>
   <section
     id="hero"
-    class="relative min-h-screen flex items-center overflow-hidden bg-night dot-grid"
+    class="relative min-h-screen flex items-center justify-center px-6 pt-32 pb-24 overflow-hidden dot-grid"
+    style="
+      background: linear-gradient(
+        135deg,
+        #0f0f1a 0%,
+        #161622 50%,
+        #0f0f1a 100%
+      );
+    "
   >
-    <!-- Orbes lumineux -->
+    <!-- Orbes décoratives -->
     <div
-      class="absolute top-[-80px] right-[-100px] w-[500px] h-[500px] rounded-full bg-rose/8 blur-[120px] pointer-events-none"
+      class="absolute top-20 right-10 w-72 h-72 rounded-full blur-3xl pointer-events-none"
+      style="
+        background: radial-gradient(
+          circle,
+          rgba(0, 245, 160, 0.08),
+          transparent 70%
+        );
+      "
     ></div>
     <div
-      class="absolute bottom-[-60px] left-[-80px] w-[400px] h-[400px] rounded-full bg-lavender/8 blur-[100px] pointer-events-none"
-    ></div>
-    <div
-      class="absolute top-1/2 left-1/3 w-[300px] h-[300px] rounded-full bg-gold/5 blur-[80px] pointer-events-none"
+      class="absolute -bottom-32 -left-32 w-96 h-96 rounded-full blur-3xl pointer-events-none"
+      style="
+        background: radial-gradient(
+          circle,
+          rgba(99, 102, 241, 0.06),
+          transparent 70%
+        );
+      "
     ></div>
 
-    <!-- Lignes fines décoratives -->
-    <div
-      class="absolute top-20 left-10 w-px h-40 bg-gradient-to-b from-transparent via-rose/30 to-transparent hidden lg:block"
-    ></div>
-    <div
-      class="absolute bottom-20 right-10 w-px h-40 bg-gradient-to-b from-transparent via-gold/30 to-transparent hidden lg:block"
-    ></div>
-
-    <div
-      class="max-w-6xl mx-auto px-6 pt-24 pb-16 grid lg:grid-cols-2 gap-12 items-center w-full"
-    >
-      <!-- Contenu texte -->
-      <div class="animate-fade-up space-y-6">
-        <!-- Badge -->
-        <div
-          class="inline-flex items-center gap-2 px-4 py-2 glass rounded-full border border-rose/20 shadow-sm glow-rose"
-        >
-          <span class="w-2 h-2 rounded-full bg-rose animate-pulse"></span>
-          <span
-            class="text-xs font-sans text-textMuted tracking-widest uppercase"
-            >Disponible pour missions</span
-          >
-        </div>
-
-        <!-- Nom -->
-        <div>
-          <p
-            class="font-sans text-textMuted text-sm tracking-[0.3em] uppercase mb-2"
-          >
-            Bonjour, je suis
-          </p>
-          <h1
-            class="font-serif text-5xl md:text-6xl lg:text-7xl text-textPrimary leading-[1.1] mb-3"
-          >
-            Sahoby<br />
+    <div class="max-w-6xl mx-auto relative z-10 w-full px-6">
+      <div class="grid lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
+        <!-- ── Colonne Texte (gauche) ── -->
+        <div class="space-y-6">
+          <!-- Titre principal -->
+          <div class="reveal flex flex-col gap-1">
             <span
-              class="italic text-rose"
-              style="text-shadow: 0 0 40px #f4a8c050"
-              >Narindra</span
+              style="
+                font-family:
+                  Space Grotesk,
+                  sans-serif;
+                font-size: clamp(0.95rem, 1.5vw + 0.4rem, 1.25rem);
+                font-weight: 500;
+                color: var(--muted);
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+              "
+              >Salut, je suis</span
             >
-          </h1>
-          <!-- Ligne décorative -->
-          <div class="flex items-center gap-3 mb-4">
-            <div class="divider-rose"></div>
-            <div
-              class="w-2 h-2 rounded-full bg-gold"
-              style="box-shadow: 0 0 8px #e0c070"
-            ></div>
+            <h1
+              class="section-title"
+              style="color: var(--text); margin-bottom: 0; white-space: nowrap"
+            >
+              <span
+                style="
+                  background: linear-gradient(90deg, #00f5a0, #6366f1);
+                  -webkit-background-clip: text;
+                  -webkit-text-fill-color: transparent;
+                  background-clip: text;
+                "
+                >Sahoby Narindra</span
+              >
+            </h1>
           </div>
-        </div>
 
-        <!-- Titre animé -->
-        <div class="flex items-center gap-2">
-          <span
-            class="font-sans text-xl md:text-2xl text-textPrimary font-light"
-          >
-            <span id="typed-text" class="text-rose font-medium"></span>
-            <span class="animate-pulse text-gold">|</span>
-          </span>
-        </div>
-
-        <!-- Phrase d'accroche -->
-        <p
-          class="font-sans text-textMuted leading-relaxed text-base md:text-lg max-w-md"
-        >
-          Je conçois et développe des applications web
-          <span class="text-textPrimary font-medium"
-            >modernes et performantes</span
-          >, avec une attention particulière à l'expérience utilisateur et au
-          design.
-        </p>
-
-        <!-- CTA Boutons -->
-        <div class="flex flex-wrap gap-4 pt-2">
-          <button @click="scrollTo('#projets')" class="btn-primary group">
-            <span>Voir mes projets</span>
-            <svg
-              class="w-4 h-4 group-hover:translate-x-1 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
-          </button>
-          <button @click="scrollTo('#contact')" class="btn-outline">
-            Me contacter
-          </button>
-        </div>
-
-        <!-- Stats rapides -->
-        <div class="flex gap-8 pt-4 border-t border-lavender/15">
-          <div>
-            <p class="font-serif text-2xl text-textPrimary">3+</p>
-            <p
-              class="font-sans text-xs text-textMuted uppercase tracking-wider"
-            >
-              Projets réalisés
-            </p>
-          </div>
-          <div class="w-px bg-lavender/20"></div>
-          <div>
-            <p class="font-serif text-2xl text-textPrimary">2+</p>
-            <p
-              class="font-sans text-xs text-textMuted uppercase tracking-wider"
-            >
-              Ans d'études
-            </p>
-          </div>
-          <div class="w-px bg-lavender/20"></div>
-          <div>
-            <p class="font-serif text-2xl text-textPrimary">5+</p>
-            <p
-              class="font-sans text-xs text-textMuted uppercase tracking-wider"
-            >
-              Technologies
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Photo / Illustration -->
-      <div class="flex justify-center lg:justify-end animate-fade-in">
-        <div class="relative">
-          <!-- Blob décoratif derrière la photo -->
-          <div
-            class="absolute inset-0 blob bg-gradient-to-br from-rose/20 to-lavender/15 scale-110 animate-float"
-          ></div>
-
-          <!-- Cadre photo -->
-          <div
-            class="relative z-10 w-64 h-64 md:w-80 md:h-80 blob overflow-hidden border-2 border-rose/20 shadow-2xl"
+          <!-- Typing animation -->
+          <p
+            class="text-2xl md:text-3xl font-bold reveal"
             style="
-              box-shadow:
-                0 0 60px #f4a8c020,
-                0 0 120px #c4b5f010;
+              color: var(--muted);
+              font-family:
+                Space Grotesk,
+                sans-serif;
             "
           >
-            <img
-              src="/cv.png"
-              alt="Sahoby Narindra"
-              class="w-full h-full object-cover object-top"
-              onerror="
-                this.style.display = 'none';
-                this.parentElement.style.background =
-                  'linear-gradient(135deg,#F4A8C030,#C4B5F030)';
-              "
-            />
-            <div
-              class="absolute inset-0 bg-gradient-to-br from-rose/10 to-lavender/10"
-            ></div>
-          </div>
+            {{ text }}<span class="animate-pulse">|</span>
+          </p>
 
-          <!-- Badge flottant -->
-          <div
-            class="absolute -bottom-4 -left-6 glass rounded-xl shadow-lg px-4 py-2 border border-rose/20 z-20 glow-rose"
-          >
-            <div class="flex items-center gap-2">
-              <div
-                class="w-8 h-8 rounded-full bg-gradient-to-br from-rose to-lavender flex items-center justify-center"
+          <!-- Sous-titre -->
+          <p class="section-subtitle reveal">
+            Je développe des solutions web complètes, du design de l'interface à
+            la logique métier, pour créer des produits fiables, performants et
+            évolutifs.
+          </p>
+
+          <!-- CTA Buttons -->
+          <div class="flex flex-col sm:flex-row gap-4 reveal">
+            <button @click="scrollTo('#projets')" class="btn-primary">
+              Voir mes projets
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 18 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  class="w-4 h-4 text-white"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                  />
-                </svg>
-              </div>
-              <div>
-                <p class="text-xs font-sans font-semibold text-textPrimary">
-                  Full-Stack
-                </p>
-                <p class="text-xs font-sans text-textMuted">Vue.js & PHP</p>
-              </div>
-            </div>
+                <path
+                  d="M3 9H15M15 9L9 3M15 9L9 15"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+            <button @click="scrollTo('#contact')" class="btn-outline">
+              Me contacter
+            </button>
           </div>
+        </div>
 
-          <!-- Badge tech flottant -->
-          <div
-            class="absolute -top-4 -right-4 glass rounded-xl shadow-lg px-3 py-2 border border-lavender/20 z-20 glow-lav"
-          >
-            <div class="flex items-center gap-1.5">
-              <span class="text-sm">⚡</span>
-              <p class="text-xs font-sans font-medium text-textPrimary">
-                Tailwind + VueJs
-              </p>
+        <!-- ── Colonne Photo (droite) ── -->
+        <div class="flex justify-center lg:justify-end reveal">
+          <div class="photo-scene relative">
+            <!-- Glow ambiant derrière -->
+            <div class="photo-glow-bg"></div>
+
+            <!-- Ring rotatif (layer 1 — lent) -->
+            <div class="photo-ring ring-slow"></div>
+            <!-- Ring rotatif (layer 2 — rapide, sens inverse) -->
+            <div class="photo-ring ring-fast"></div>
+
+            <!-- Cadre photo blob -->
+            <div class="photo-blob">
+              <!-- Placeholder / photo -->
+              <div
+                class="w-full h-full flex flex-col items-center justify-center gap-3"
+                style="
+                  background: linear-gradient(
+                    160deg,
+                    #161622 0%,
+                    #1a1a2e 60%,
+                    #0f0f1a 100%
+                  );
+                "
+              >
+                <img
+                  src="/b.png"
+                  alt="Sahoby Narindra"
+                  class="w-full h-full object-cover object-top"
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Scroll indicator -->
-    <div
-      class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce"
-    >
-      <span class="font-sans text-xs text-muted tracking-widest uppercase"
-        >Défiler</span
-      >
-      <div class="w-px h-10 bg-gradient-to-b from-rose/60 to-transparent"></div>
+      <!-- Scroll indicator -->
+      <!-- <div class="mt-12 reveal flex justify-center">
+        <div class="animate-bounce" style="color: var(--muted)">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12 5V19M19 12L12 19L5 12"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+      </div> -->
     </div>
   </section>
 </template>
+
+<style scoped>
+/* ── Photo Scene ── */
+.photo-scene {
+  width: 300px;
+  height: 360px;
+}
+
+/* Glow diffus derrière */
+.photo-glow-bg {
+  position: absolute;
+  inset: -40px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 245, 160, 0.12) 0%,
+    rgba(99, 102, 241, 0.08) 50%,
+    transparent 70%
+  );
+  filter: blur(30px);
+  border-radius: 50%;
+  z-index: 0;
+  animation: glow-pulse 4s ease-in-out infinite;
+}
+
+/* Anneaux tournants */
+.photo-ring {
+  position: absolute;
+  inset: -8px;
+  border-radius: 62% 38% 55% 45% / 56% 48% 52% 44%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.photo-ring::after {
+  content: "";
+  position: absolute;
+  inset: -120%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    #00f5a0 18%,
+    #6366f1 36%,
+    transparent 50%,
+    #00f5a0 68%,
+    #6366f1 85%,
+    transparent 100%
+  );
+  z-index: 0;
+}
+
+.photo-ring::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  background: #0f0f1a;
+  border-radius: inherit;
+  z-index: 1;
+}
+
+.ring-slow::after {
+  animation: spin 5s linear infinite;
+}
+.ring-fast::after {
+  animation: spin 3s linear infinite reverse;
+  opacity: 0.5;
+}
+
+/* Blob photo principal */
+.photo-blob {
+  position: absolute;
+  inset: 0;
+  border-radius: 62% 38% 55% 45% / 56% 48% 52% 44%;
+  overflow: hidden;
+  z-index: 2;
+  animation: blob-morph 8s ease-in-out infinite;
+}
+
+/* Badges flottants */
+.badge-float {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background: rgba(15, 15, 26, 0.92);
+  backdrop-filter: blur(16px);
+  z-index: 10;
+}
+
+.badge-left {
+  bottom: -16px;
+  left: -24px;
+  border: 1px solid rgba(0, 245, 160, 0.25);
+  box-shadow: 0 0 24px rgba(0, 245, 160, 0.1);
+}
+
+.badge-right {
+  top: -16px;
+  right: -24px;
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.1);
+}
+
+.badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00f5a0;
+  box-shadow: 0 0 8px #00f5a0;
+  animation: dot-pulse 2s ease-in-out infinite;
+}
+
+/* Keyframes */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes blob-morph {
+  0%,
+  100% {
+    border-radius: 62% 38% 55% 45% / 56% 48% 52% 44%;
+  }
+  25% {
+    border-radius: 50% 50% 38% 62% / 44% 56% 44% 56%;
+  }
+  50% {
+    border-radius: 38% 62% 62% 38% / 52% 44% 56% 48%;
+  }
+  75% {
+    border-radius: 55% 45% 45% 55% / 60% 40% 60% 40%;
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes dot-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 6px #00f5a0;
+  }
+  50% {
+    box-shadow:
+      0 0 16px #00f5a0,
+      0 0 30px rgba(0, 245, 160, 0.4);
+  }
+}
+</style>
