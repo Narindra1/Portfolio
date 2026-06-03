@@ -13,11 +13,11 @@ export const timeline = [
   {
     type: "education",
     year: "2025",
-    title: "Master 2 — MISA",
+    title: "Master 1 — MISA",
     subtitle: "Mathématiques Informatique et Statistique Appliquée",
     description:
       "Université MISA d'Antananarivo. Spécialisation en développement logiciel, algorithmes avancés et statistiques appliquées.",
-    tags: ["Master 2", "Informatique", "Mathématiques"],
+    tags: ["Master 1", "Informatique", "Mathématiques"],
     icon: "🎓",
     color: "from-gold to-terracotta",
   },

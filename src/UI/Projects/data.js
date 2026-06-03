@@ -23,24 +23,25 @@ export const projects = [
 
   {
     id: 2,
-    title: "To-Do List",
-    category: "frontend",
+    title: "BookMarker App",
+    category: "frontend & backend",
     emoji: "✅",
     gradient: "from-rose/20 to-blush/30",
     accentColor: "bg-rose",
     description:
-      "Application web interactive permettant d'ajouter, modifier et supprimer des tâches avec filtrage dynamique (toutes / actives / terminées).",
+      "Application web permettant de sauvegarder, organiser et gérer des liens favoris avec authentification utilisateur.",
     features: [
-      "CRUD complet",
-      "Filtrage des tâches",
-      "Interface réactive",
-      "Gestion d'état",
+      "CRUD complet des bookmarks",
+      "Authentification sécurisée (JWT)",
+      "Gestion des catégories et favoris",
+      " Interface responsive et interactive",
     ],
-    tags: ["VueJs", "Tailwind CSS"],
+    tags: ["VueJs", "Tailwind CSS", "NodeJs", "Express", "MongoDB"],
     year: "2024",
     status: "Terminé",
-    github: "https://github.com/Narindra1/Gestionnaire-de-t-che",
-    demo: null,
+    github:
+      "https://https://github.com/Narindra1/BookMarker-app.com/Narindra1/Gestionnaire-de-t-che",
+    demo: "https://app-bookmarker.netlify.app/",
   },
   {
     id: 3,

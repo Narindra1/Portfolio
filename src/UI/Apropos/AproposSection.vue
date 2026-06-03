@@ -48,6 +48,29 @@
       </div>
 
       <!-- ── Actions : CV + Socials ── -->
+      <h1 class="langs-label text-xl">▶ Langues</h1>
+      <div ref="langsRef" class="langs-grid">
+        <div
+          v-for="lang in languages"
+          :key="lang.lang"
+          class="lang-item text-xl"
+        >
+          <div class="lang-info flex justify-between">
+            <span class="lang-name">{{ lang.lang }}</span>
+            <span class="lang-pct"> {{ lang.level }}% </span>
+          </div>
+          <div class="lang-track">
+            <div
+              class="lang-bar"
+              :class="lang.lang === 'Anglais' ? 'bar-blue' : 'bar-green'"
+              :style="{ width: langsVisible ? lang.level + '%' : '0%' }"
+            ></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Séparateur + Langues ── -->
+
       <div
         ref="actionsRef"
         class="actions-row reveal"
@@ -112,31 +135,6 @@
               <path d="M2 7l10 7 10-7" />
             </svg>
           </a>
-        </div>
-      </div>
-
-      <!-- ── Séparateur + Langues ── -->
-      <div
-        ref="langsRef"
-        class="langs-section reveal"
-        :class="{ visible: langsVisible }"
-      >
-        <hr class="section-sep" />
-        <p class="langs-label">▶ Langues</p>
-        <div class="langs-grid">
-          <div v-for="lang in languages" :key="lang.lang" class="lang-item">
-            <div class="lang-info flex justify-between">
-              <span class="lang-name">{{ lang.lang }}</span>
-              <span class="lang-pct"> {{ lang.level }}% </span>
-            </div>
-            <div class="lang-track">
-              <div
-                class="lang-bar"
-                :class="lang.lang === 'Anglais' ? 'bar-blue' : 'bar-green'"
-                :style="{ width: langsVisible ? lang.level + '%' : '0%' }"
-              ></div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -263,9 +261,9 @@ useIntersectionObserver(
 .actions-row {
   display: flex;
   align-items: center;
+  justify-content: end;
   gap: 1.25rem;
   flex-wrap: wrap;
-  margin-bottom: 3rem;
 }
 .cv-btn {
   display: inline-flex;
@@ -330,11 +328,14 @@ useIntersectionObserver(
   color: #00c896;
   text-transform: uppercase;
   letter-spacing: 0.12em;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
 }
 .langs-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 0.85rem 2rem;
+  margin-bottom: 3rem;
 }
 .lang-item {
   display: flex;

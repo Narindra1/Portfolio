@@ -14,7 +14,6 @@ export const techCategories = [
         name: "Tailwind CSS",
         icon: BASE + "tailwindcss/tailwindcss-original.svg",
       },
-      { name: "Figma", icon: BASE + "figma/figma-original.svg" },
       { name: "TypeScript", icon: BASE + "typescript/typescript-original.svg" },
     ],
   },
@@ -48,7 +47,7 @@ export const techCategories = [
   },
   {
     key: "tools",
-    label: "Outils & Design",
+    label: "Outils & Deploiement",
     icon: "🛠️",
     bg: "rgba(129,140,248,0.1)",
     glowColor: "#818cf8",
@@ -59,8 +58,9 @@ export const techCategories = [
         icon: BASE + "github/github-original.svg",
         filter: "invert(1) brightness(2)",
       },
+      { name: "Figma", icon: BASE + "figma/figma-original.svg" },
+
       { name: "Vite", icon: BASE + "vite/vite-original.svg" },
-      { name: "VS Code", icon: BASE + "vscode/vscode-original.svg" },
     ],
   },
 ];

@@ -30,44 +30,29 @@
           v-for="(cat, idx) in categories"
           :key="cat.key"
           class="cat-card reveal"
-          :class="{ visible: titleVisible, active: openCategory === cat.key }"
+          :class="{ visible: titleVisible }"
           :style="{ transitionDelay: idx * 80 + 'ms' }"
-          @click="toggle(cat.key)"
         >
           <!-- Header -->
           <div class="cat-header">
             <h3 class="cat-label">{{ cat.label }}</h3>
-            <span
-              class="cat-arrow"
-              :class="{ rotated: openCategory === cat.key }"
-              >▼</span
-            >
           </div>
 
-          <!-- Logos (ouvre/ferme au clic) -->
-          <div
-            class="techs-wrapper"
-            :class="{ open: openCategory === cat.key }"
-          >
-            <div class="techs-inner">
-              <div
-                v-for="(tech, tIdx) in cat.techs"
-                :key="tech.name"
-                class="tech-item"
-                :class="{ 'item-visible': openCategory === cat.key }"
-                :style="{
-                  transitionDelay:
-                    openCategory === cat.key ? tIdx * 100 + 'ms' : '0ms',
-                }"
-              >
-                <img
-                  :src="tech.icon"
-                  :alt="tech.name"
-                  class="tech-logo"
-                  :style="tech.filter ? { filter: tech.filter } : {}"
-                />
-                <span class="tech-name">{{ tech.name }}</span>
-              </div>
+          <!-- Logos (toujours visibles) -->
+          <div class="techs-inner">
+            <div
+              v-for="(tech, tIdx) in cat.techs"
+              :key="tech.name"
+              class="tech-item item-visible"
+              :style="{ transitionDelay: tIdx * 60 + 'ms' }"
+            >
+              <img
+                :src="tech.icon"
+                :alt="tech.name"
+                class="tech-logo"
+                :style="tech.filter ? { filter: tech.filter } : {}"
+              />
+              <span class="tech-name">{{ tech.name }}</span>
             </div>
           </div>
         </div>
@@ -83,11 +68,6 @@ import { techCategories as categories } from "./data.js";
 
 const titleRef = ref(null);
 const titleVisible = ref(false);
-const openCategory = ref(null);
-
-const toggle = (key) => {
-  openCategory.value = openCategory.value === key ? null : key;
-};
 
 useIntersectionObserver(
   titleRef,
@@ -170,7 +150,7 @@ useIntersectionObserver(
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.25rem;
-  align-items: start;
+  align-items: stretch;
 }
 
 /* ── Carte ── */
@@ -179,9 +159,10 @@ useIntersectionObserver(
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 16px;
   padding: 1.25rem;
-  cursor: pointer;
   user-select: none;
   backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
   transition:
     border-color 0.25s ease,
     box-shadow 0.25s ease;
@@ -190,16 +171,13 @@ useIntersectionObserver(
   border-color: rgba(0, 200, 150, 0.22);
   box-shadow: 0 4px 24px rgba(0, 200, 150, 0.07);
 }
-.cat-card.active {
-  border-color: rgba(0, 200, 150, 0.35);
-  box-shadow: 0 6px 32px rgba(0, 200, 150, 0.1);
-}
 
 /* ── Header carte ── */
 .cat-header {
   display: flex;
   align-items: center;
   gap: 0.65rem;
+  margin-bottom: 1rem;
 }
 .cat-icon {
   width: 38px;
@@ -223,31 +201,10 @@ useIntersectionObserver(
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
-.cat-arrow {
-  font-size: 0.6rem;
-  color: #00c896;
-  transition: transform 0.3s ease;
-  flex-shrink: 0;
-}
-.cat-arrow.rotated {
-  transform: rotate(180deg);
-}
-
 /* ── Collapse/expand ── */
-.techs-wrapper {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition:
-    grid-template-rows 0.4s ease,
-    margin-top 0.4s ease;
-  margin-top: 0;
-}
-.techs-wrapper.open {
-  grid-template-rows: 1fr;
-  margin-top: 1rem;
-}
 .techs-inner {
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ── Item tech ── */
