@@ -7,7 +7,7 @@
     <div class="orb orb-right"></div>
     <div class="orb orb-left"></div>
 
-    <div class="mx-auto px-10">
+    <div class="mx-auto px-5 md:px-10">
       <!-- ── Titre ── -->
       <div
         ref="titleRef"
@@ -382,6 +382,18 @@ const filteredTimeline = computed(() =>
   .tl-dot {
     left: 11px;
     transform: none;
+  }
+  .filters {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}
+@media (max-width: 480px) {
+  .tl-card {
+    padding: 1rem;
+  }
+  .tl-header {
+    flex-wrap: wrap;
   }
 }
 </style>

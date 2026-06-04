@@ -14,7 +14,7 @@
     <div class="orb orb-right"></div>
     <div class="orb orb-left"></div>
 
-    <div class="mx-auto px-10">
+    <div class="mx-auto px-5 md:px-10">
       <!-- ── Titre ── -->
       <div
         ref="titleRef"
@@ -384,17 +384,27 @@ useIntersectionObserver(
 }
 
 /* ── Responsive ── */
+@media (max-width: 768px) {
+  .langs-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 @media (max-width: 640px) {
   .text-grid {
     grid-template-columns: 1fr;
     gap: 1.25rem;
   }
   .langs-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
   .actions-row {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+@media (max-width: 400px) {
+  .langs-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>

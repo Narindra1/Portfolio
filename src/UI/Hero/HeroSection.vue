@@ -25,7 +25,7 @@ const scrollTo = (href) => {
 <template>
   <section
     id="hero"
-    class="relative min-h-screen flex items-center justify-center px-6 pt-32 pb-24 overflow-hidden dot-grid"
+    class="relative min-h-screen flex items-center justify-center px-5 pt-24 pb-16 md:px-6 md:pt-32 md:pb-24 overflow-hidden dot-grid"
     style="
       background: linear-gradient(
         135deg,
@@ -78,7 +78,7 @@ const scrollTo = (href) => {
             >
             <h1
               class="section-title"
-              style="color: var(--text); margin-bottom: 0; white-space: nowrap"
+              style="color: var(--text); margin-bottom: 0"
             >
               <span
                 style="
@@ -203,6 +203,16 @@ const scrollTo = (href) => {
 .photo-scene {
   width: 300px;
   height: 360px;
+}
+
+@media (max-width: 640px) {
+  .photo-scene {
+    width: 210px;
+    height: 250px;
+  }
+  .badge-float {
+    display: none;
+  }
 }
 
 /* Glow diffus derrière */

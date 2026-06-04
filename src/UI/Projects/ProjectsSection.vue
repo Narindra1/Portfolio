@@ -8,7 +8,7 @@
     <div class="orb orb-left"></div>
     <div class="orb orb-right"></div>
 
-    <div class="mx-auto px-10">
+    <div class="mx-auto px-5 md:px-10">
       <!-- ── Titre ── -->
       <div
         ref="titleRef"
